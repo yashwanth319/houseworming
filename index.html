@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gruhapravesam Invitation - Vallapudasu Family</title>
+  <title>Gruhapravesam Greeting Card - Vallapudasu Family</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Great+Vibes&family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
 
@@ -18,6 +18,7 @@
       font-family: 'Lora', Georgia, serif;
       min-height: 100vh;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       padding: 24px 16px;
@@ -25,327 +26,250 @@
       overflow-x: hidden;
     }
 
-    /* Scene Container */
-    .scene {
-      position: relative;
+    /* 3D Perspective Stage */
+    .stage {
+      perspective: 1800px;
       width: 100%;
-      max-width: 650px;
       display: flex;
-      flex-direction: column;
-      align-items: center;
       justify-content: center;
-      perspective: 1400px;
+      align-items: center;
     }
 
-    /* ---------------- COVER / ENVELOPE ---------------- */
-    .cover-wrapper {
+    /* Greeting Card Container */
+    .greeting-card {
       position: relative;
-      width: 100%;
-      max-width: 440px;
-      height: 300px;
+      width: 380px;
+      height: 540px;
+      transform-style: preserve-3d;
+      transition: transform 0.9s cubic-bezier(0.25, 0.8, 0.25, 1);
       cursor: pointer;
-      transition: opacity 0.6s ease 0.55s, transform 0.6s ease 0.55s;
-      z-index: 2;
     }
 
-    .scene.opened .cover-wrapper {
-      opacity: 0;
-      transform: translateY(80px) scale(0.9);
-      pointer-events: none;
-      position: absolute;
+    /* Shift right when opened so the 2-page spread stays centered */
+    .greeting-card.open {
+      transform: translateX(50%);
     }
 
-    .envelope-back {
+    /* ---------------- RIGHT INSIDE PAGE (BASE) ---------------- */
+    .inside-right {
       position: absolute;
       inset: 0;
-      background: linear-gradient(145deg, #6b0f18, #45080e);
-      border: 2px solid #d4af37;
-      border-radius: 6px;
-      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.65);
-    }
-
-    /* Card peeking inside the cover */
-    .card-peek {
-      position: absolute;
-      left: 18px;
-      right: 18px;
-      top: 16px;
-      bottom: 16px;
-      background: linear-gradient(145deg, #fffdf7, #fdf5e6);
-      border: 3px double #b8860b;
-      border-radius: 4px;
+      background: linear-gradient(145deg, #fffdf7 0%, #fdf5e6 100%);
+      border: 6px double #b8860b;
+      outline: 2px solid #7a121c;
+      outline-offset: -12px;
+      border-radius: 0 8px 8px 0;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.55);
+      padding: 28px 24px;
+      text-align: center;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      text-align: center;
-      transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.25s;
+      justify-content: space-between;
+      z-index: 1;
+    }
+
+    /* ---------------- FRONT COVER + LEFT INSIDE PAGE ---------------- */
+    .card-cover {
+      position: absolute;
+      inset: 0;
+      transform-origin: left center;
+      transform-style: preserve-3d;
+      transition: transform 1s cubic-bezier(0.25, 0.8, 0.25, 1);
       z-index: 2;
     }
 
-    .scene.opened .card-peek {
-      transform: translateY(-130px);
+    .greeting-card.open .card-cover {
+      transform: rotateY(-180deg);
     }
 
-    .card-peek span {
+    .cover-front,
+    .inside-left {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 0 8px 8px 0;
+    }
+
+    /* Front Cover Design */
+    .cover-front {
+      background: linear-gradient(145deg, #7a121c 0%, #4d080f 100%);
+      border: 6px double #d4af37;
+      outline: 2px solid rgba(212, 175, 55, 0.5);
+      outline-offset: -14px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      padding: 36px 26px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: #f9e29c;
+    }
+
+    .cover-om {
+      font-size: 3rem;
+      color: #e6c25b;
+      margin-bottom: 12px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+    }
+
+    .cover-blessing {
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: #f3d78a;
+      margin-bottom: 24px;
+    }
+
+    .cover-title {
       font-family: 'Great Vibes', cursive;
+      font-size: 3.1rem;
+      color: #ffdf80;
+      line-height: 1.15;
+      margin-bottom: 8px;
+    }
+
+    .cover-subtitle {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #fdf5e6;
+      margin-bottom: 28px;
+    }
+
+    .cover-divider {
+      width: 120px;
+      height: 2px;
+      background: linear-gradient(to right, transparent, #d4af37, transparent);
+      margin-bottom: 24px;
+    }
+
+    .cover-family {
+      font-family: 'Cinzel', serif;
+      font-size: 1.05rem;
+      letter-spacing: 1.5px;
+      color: #f3d78a;
+      margin-bottom: 34px;
+    }
+
+    .open-badge {
+      border: 1px solid #d4af37;
+      padding: 8px 20px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.78rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #fdf5e6;
+      background: rgba(212, 175, 55, 0.14);
+      border-radius: 3px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+
+    /* Inside Left Page (Back of Cover) */
+    .inside-left {
+      transform: rotateY(180deg);
+      background: linear-gradient(145deg, #fdf5e6 0%, #f8ebd2 100%);
+      border: 6px double #b8860b;
+      outline: 2px solid #7a121c;
+      outline-offset: -12px;
+      border-radius: 8px 0 0 8px;
+      box-shadow: inset -12px 0 24px rgba(122, 18, 28, 0.1);
+      padding: 32px 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+    }
+
+    /* ---------------- TYPOGRAPHY INSIDE CARD ---------------- */
+    .symbol {
       font-size: 2rem;
       color: #b8860b;
     }
 
-    .card-peek small {
-      font-family: 'Cinzel', serif;
-      font-size: 0.75rem;
-      letter-spacing: 2px;
-      color: #7a121c;
-      text-transform: uppercase;
-    }
-
-    /* Front pocket of the cover */
-    .envelope-front {
-      position: absolute;
-      inset: 0;
-      z-index: 3;
-      pointer-events: none;
-      overflow: hidden;
-      border-radius: 6px;
-    }
-
-    .envelope-front::before {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 0;
-      border-left: 220px solid #7a121c;
-      border-right: 220px solid #680e17;
-      border-top: 155px solid transparent;
-      border-bottom: 145px solid #590b13;
-    }
-
-    .cover-label {
-      position: absolute;
-      bottom: 26px;
-      left: 0;
-      right: 0;
-      text-align: center;
-      z-index: 4;
-      pointer-events: none;
-    }
-
-    .cover-label h2 {
-      font-family: 'Cinzel', serif;
-      font-size: 1rem;
-      letter-spacing: 2.5px;
-      color: #f3d78a;
-      text-transform: uppercase;
-      margin-bottom: 4px;
-    }
-
-    .cover-label p {
-      font-size: 0.85rem;
-      font-style: italic;
-      color: #e6c98a;
-      opacity: 0.9;
-    }
-
-    /* Top Flap */
-    .envelope-flap {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 165px;
-      transform-origin: top center;
-      transition: transform 0.55s ease;
-      z-index: 5;
-      transform-style: preserve-3d;
-    }
-
-    .envelope-flap::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(180deg, #8b1622 0%, #680d16 100%);
-      clip-path: polygon(0 0, 100% 0, 50% 100%);
-      border-top: 2px solid #d4af37;
-    }
-
-    .scene.opened .envelope-flap {
-      transform: rotateX(180deg);
-      z-index: 1;
-    }
-
-    /* Golden Wax Seal */
-    .wax-seal {
-      position: absolute;
-      top: 132px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 68px;
-      height: 68px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, #f9e29c, #d4af37 55%, #8c6405 100%);
-      border: 2px solid #fff3c4;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: #5a0d14;
-      z-index: 6;
-      transition: transform 0.3s ease, opacity 0.35s ease;
-    }
-
-    .cover-wrapper:hover .wax-seal {
-      transform: translateX(-50%) scale(1.08);
-    }
-
-    .scene.opened .wax-seal {
-      opacity: 0;
-      transform: translateX(-50%) scale(0.6);
-    }
-
-    .wax-seal .om {
-      font-size: 1.45rem;
-      line-height: 1;
-      font-weight: bold;
-    }
-
-    .wax-seal .open-text {
-      font-family: 'Cinzel', serif;
-      font-size: 0.58rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      margin-top: 2px;
-    }
-
-    .tap-hint {
-      margin-top: 20px;
-      font-family: 'Cinzel', serif;
-      font-size: 0.85rem;
-      letter-spacing: 2px;
-      color: #f3d78a;
-      text-transform: uppercase;
-      animation: pulse 1.8s infinite;
-      transition: opacity 0.4s ease;
-    }
-
-    .scene.opened .tap-hint {
-      opacity: 0;
-      display: none;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 0.55; }
-      50% { opacity: 1; }
-    }
-
-    /* ---------------- FULL INVITATION CARD ---------------- */
-    .invitation-card {
-      background: linear-gradient(145deg, #fffdf7 0%, #fdf5e6 100%);
-      width: 100%;
-      max-width: 650px;
-      padding: 42px 34px;
-      border: 8px double #b8860b;
-      outline: 3px solid #7a121c;
-      outline-offset: -16px;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.55);
-      text-align: center;
-      opacity: 0;
-      transform: translateY(70px) scale(0.92);
-      pointer-events: none;
-      position: absolute;
-      transition: opacity 0.7s ease 0.6s, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.6s;
-    }
-
-    .scene.opened .invitation-card {
-      position: relative;
-      opacity: 1;
-      transform: translateY(0) scale(1);
-      pointer-events: auto;
-    }
-
-    .symbol {
-      font-size: 2.2rem;
-      color: #b8860b;
-      margin-bottom: 6px;
-    }
-
     .blessing {
       font-family: 'Cinzel', serif;
-      font-size: 0.9rem;
+      font-size: 0.8rem;
       letter-spacing: 2px;
       color: #8b1e24;
       font-weight: 700;
-      margin-bottom: 12px;
       text-transform: uppercase;
+      margin-top: 4px;
     }
 
-    .subtitle {
-      font-size: 1rem;
+    .quote {
+      font-size: 0.95rem;
+      font-style: italic;
+      line-height: 1.75;
+      color: #5c3a21;
+      padding: 0 8px;
+    }
+
+    .divider {
+      width: 110px;
+      height: 2px;
+      background: linear-gradient(to right, transparent, #b8860b, transparent);
+      margin: 10px auto;
+    }
+
+    .hosts-label {
+      font-size: 0.85rem;
       font-style: italic;
       color: #5c3a21;
-      margin-bottom: 18px;
+      margin-bottom: 6px;
     }
 
     .hosts {
       font-family: 'Cinzel', serif;
-      font-size: 1.25rem;
+      font-size: 1rem;
       font-weight: 700;
       color: #7a121c;
-      line-height: 1.6;
-      margin-bottom: 18px;
+      line-height: 1.5;
     }
 
     .invite-text {
-      font-size: 1rem;
-      line-height: 1.7;
+      font-size: 0.88rem;
+      line-height: 1.5;
       color: #4a2c2a;
-      margin-bottom: 18px;
+      margin: 8px 0;
     }
 
     .event-title {
       font-family: 'Great Vibes', cursive;
-      font-size: 3.1rem;
+      font-size: 2.3rem;
       color: #b8860b;
-      margin: 6px 0 4px;
-      line-height: 1.2;
+      line-height: 1.1;
     }
 
     .event-subtitle {
       font-family: 'Cinzel', serif;
-      font-size: 1.1rem;
-      letter-spacing: 3px;
+      font-size: 0.88rem;
+      letter-spacing: 2.5px;
       color: #7a121c;
       text-transform: uppercase;
-      margin-bottom: 22px;
-    }
-
-    .divider {
-      width: 160px;
-      height: 2px;
-      background: linear-gradient(to right, transparent, #b8860b, transparent);
-      margin: 18px auto;
+      margin-bottom: 8px;
     }
 
     .details-box {
       background-color: rgba(184, 134, 11, 0.08);
       border-top: 1px solid #d4af37;
       border-bottom: 1px solid #d4af37;
-      padding: 18px 16px;
-      margin: 20px 0;
+      padding: 12px 10px;
+      margin: 8px 0;
     }
 
     .detail-row {
-      margin: 10px 0;
-      font-size: 1rem;
+      margin: 6px 0;
+      font-size: 0.88rem;
       color: #3b1c1c;
     }
 
@@ -353,181 +277,168 @@
       font-family: 'Cinzel', serif;
       font-weight: 700;
       color: #7a121c;
-      display: block;
-      font-size: 0.88rem;
+      font-size: 0.76rem;
       letter-spacing: 1px;
       text-transform: uppercase;
-      margin-bottom: 2px;
+      display: block;
     }
 
     .compliments-label {
-      font-size: 0.92rem;
+      font-size: 0.85rem;
       font-style: italic;
       color: #6b4c35;
-      margin-top: 20px;
     }
 
     .son-name {
       font-family: 'Cinzel', serif;
-      font-size: 1.2rem;
+      font-size: 1.05rem;
       font-weight: 700;
       color: #7a121c;
-      margin-top: 6px;
+      margin-top: 4px;
     }
 
     .footer-note {
-      margin-top: 16px;
-      font-size: 0.9rem;
+      font-size: 0.82rem;
       color: #5c3a21;
+      margin-top: 4px;
     }
 
-    .close-btn {
+    .controls {
       margin-top: 24px;
+      text-align: center;
+    }
+
+    .toggle-btn {
       background: #7a121c;
       color: #fdf5e6;
       border: 1px solid #d4af37;
-      padding: 10px 22px;
+      padding: 10px 24px;
       font-family: 'Cinzel', serif;
       font-size: 0.82rem;
       letter-spacing: 1.5px;
       text-transform: uppercase;
       cursor: pointer;
-      border-radius: 3px;
+      border-radius: 4px;
       transition: background 0.25s ease;
     }
 
-    .close-btn:hover {
+    .toggle-btn:hover {
       background: #5a0d14;
     }
 
-    @media (max-width: 480px) {
-      .cover-wrapper {
-        height: 250px;
+    /* Responsive Scaling for Tablets & Mobile */
+    @media (max-width: 820px) {
+      .greeting-card {
+        width: 300px;
+        height: 460px;
       }
-      .envelope-front::before {
-        border-left-width: 190px;
-        border-right-width: 190px;
-        border-top-width: 130px;
-        border-bottom-width: 120px;
-      }
-      .envelope-flap {
-        height: 138px;
-      }
-      .wax-seal {
-        top: 105px;
-      }
-      .invitation-card {
-        padding: 32px 22px;
-      }
-      .event-title {
-        font-size: 2.5rem;
-      }
+      .cover-title { font-size: 2.5rem; }
+      .event-title { font-size: 1.9rem; }
+      .hosts { font-size: 0.88rem; }
+      .detail-row, .quote, .invite-text { font-size: 0.8rem; }
     }
 
-    @media print {
-      body {
-        background: none;
-        padding: 0;
-      }
-      .cover-wrapper,
-      .tap-hint,
-      .close-btn {
-        display: none !important;
-      }
-      .invitation-card {
-        position: relative;
-        opacity: 1;
-        transform: none;
-        box-shadow: none;
+    @media (max-width: 640px) {
+      .greeting-card.open {
+        transform: translateX(50%) scale(0.55);
       }
     }
   </style>
 </head>
 <body>
 
-  <div class="scene" id="scene">
-    <!-- Envelope Cover -->
-    <div class="cover-wrapper" id="cover" onclick="openInvitation()" role="button" aria-label="Open Invitation">
-      <div class="envelope-back"></div>
+  <div class="stage">
+    <div class="greeting-card" id="card" onclick="toggleCard()">
 
-      <div class="card-peek">
-        <span>Gruhapravesam</span>
-        <small>Vallapudasu Family</small>
-      </div>
-
-      <div class="envelope-front"></div>
-
-      <div class="cover-label">
-        <h2>Vallapudasu Family</h2>
-        <p>House Warming Invitation</p>
-      </div>
-
-      <div class="envelope-flap"></div>
-
-      <div class="wax-seal">
-        <span class="om">&#2384;</span>
-        <span class="open-text">Open</span>
-      </div>
-    </div>
-
-    <div class="tap-hint">Tap the seal to open invitation</div>
-
-    <!-- Full Invitation Card -->
-    <div class="invitation-card">
-      <div class="symbol">&#2384;</div>
-      <div class="blessing">Sri Ganeshaya Namaha</div>
-
-      <p class="subtitle">With the blessings of Almighty and Elders</p>
-
-      <div class="hosts">
-        Smt. Vallapudasu Ramadevi Goud<br>
-        &amp;<br>
-        Sri Vallapudasu Srisailam Goud
-      </div>
-
-      <p class="invite-text">
-        Cordially invite you and your family to grace the auspicious occasion of our
-      </p>
-
-      <h1 class="event-title">House Warming Ceremony</h1>
-      <div class="event-subtitle">Gruhapravesam</div>
-
-      <div class="divider"></div>
-
-      <div class="details-box">
-        <div class="detail-row">
-          <span class="detail-label">Date</span>
-          [Day, DD Month YYYY]
+      <!-- FRONT COVER & INSIDE LEFT PAGE -->
+      <div class="card-cover">
+        <!-- Outside Front -->
+        <div class="cover-front">
+          <div class="cover-om">&#2384;</div>
+          <div class="cover-blessing">Sri Ganeshaya Namaha</div>
+          <h1 class="cover-title">House Warming</h1>
+          <div class="cover-subtitle">Gruhapravesam</div>
+          <div class="cover-divider"></div>
+          <div class="cover-family">Vallapudasu Family</div>
+          <div class="open-badge">Tap to Open Card</div>
         </div>
-        <div class="detail-row">
-          <span class="detail-label">Sumuhurtham</span>
-          [HH:MM AM] onwards
-        </div>
-        <div class="detail-row">
-          <span class="detail-label">Lunch</span>
-          [12:30 PM] onwards
-        </div>
-        <div class="detail-row">
-          <span class="detail-label">Venue</span>
-          [House No., Street Name, Locality, City - PIN]
+
+        <!-- Inside Left Page -->
+        <div class="inside-left">
+          <div>
+            <div class="symbol">&#2384;</div>
+            <div class="blessing">Warm Welcome</div>
+          </div>
+
+          <p class="quote">
+            "A new home is a place for memories to be made and dreams to come true. Your presence and blessings will make this auspicious beginning truly special for us."
+          </p>
+
+          <div class="divider"></div>
+
+          <div>
+            <p class="compliments-label">With Best Compliments From</p>
+            <div class="son-name">Vallapudasu Yashwanth Goud</div>
+            <div class="footer-note">Near &amp; Dear</div>
+          </div>
         </div>
       </div>
 
-      <p class="compliments-label">With Best Compliments From</p>
-      <div class="son-name">Vallapudasu Yashwanth Goud</div>
-      <div class="footer-note">Near &amp; Dear &bull; Contact: [+91 XXXXX XXXXX]</div>
+      <!-- INSIDE RIGHT PAGE -->
+      <div class="inside-right">
+        <div>
+          <p class="hosts-label">With the blessings of Almighty &amp; Elders</p>
+          <div class="hosts">
+            Smt. Vallapudasu Ramadevi Goud<br>
+            &amp;<br>
+            Sri Vallapudasu Srisailam Goud
+          </div>
+          <p class="invite-text">
+            Cordially invite you and your family to our
+          </p>
+          <div class="event-title">House Warming</div>
+          <div class="event-subtitle">Gruhapravesam</div>
+        </div>
 
-      <button class="close-btn" onclick="closeInvitation()">Close Cover</button>
+        <div class="details-box">
+          <div class="detail-row">
+            <span class="detail-label">Date</span>
+            [Day, DD Month YYYY]
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Sumuhurtham</span>
+            [HH:MM AM] onwards
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Lunch</span>
+            [12:30 PM] onwards
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Venue</span>
+            [House No., Street, Locality, City]
+          </div>
+        </div>
+
+        <div class="footer-note">
+          Contact: [+91 XXXXX XXXXX]
+        </div>
+      </div>
+
     </div>
   </div>
 
-  <script>
-    function openInvitation() {
-      document.getElementById('scene').classList.add('opened');
-    }
+  <div class="controls">
+    <button class="toggle-btn" id="toggleBtn" onclick="toggleCard()">Open Greeting Card</button>
+  </div>
 
-    function closeInvitation() {
-      document.getElementById('scene').classList.remove('opened');
+  <script>
+    function toggleCard() {
+      const card = document.getElementById('card');
+      const btn = document.getElementById('toggleBtn');
+      card.classList.toggle('open');
+      btn.textContent = card.classList.contains('open')
+        ? 'Close Greeting Card'
+        : 'Open Greeting Card';
     }
   </script>
 
