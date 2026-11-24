@@ -14,27 +14,268 @@
     }
 
     body {
-      background-color: #2b0a0d;
+      background: radial-gradient(circle at center, #420c11 0%, #1c0507 100%);
       font-family: 'Lora', Georgia, serif;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      padding: 24px;
+      padding: 24px 16px;
       color: #3b1c1c;
+      overflow-x: hidden;
     }
 
-    .card {
-      background: linear-gradient(145deg, #fffdf7 0%, #fdf5e6 100%);
-      max-width: 650px;
+    /* Scene Container */
+    .scene {
+      position: relative;
       width: 100%;
-      padding: 40px 36px;
+      max-width: 650px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      perspective: 1400px;
+    }
+
+    /* ---------------- COVER / ENVELOPE ---------------- */
+    .cover-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 440px;
+      height: 300px;
+      cursor: pointer;
+      transition: opacity 0.6s ease 0.55s, transform 0.6s ease 0.55s;
+      z-index: 2;
+    }
+
+    .scene.opened .cover-wrapper {
+      opacity: 0;
+      transform: translateY(80px) scale(0.9);
+      pointer-events: none;
+      position: absolute;
+    }
+
+    .envelope-back {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(145deg, #6b0f18, #45080e);
+      border: 2px solid #d4af37;
+      border-radius: 6px;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.65);
+    }
+
+    /* Card peeking inside the cover */
+    .card-peek {
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      top: 16px;
+      bottom: 16px;
+      background: linear-gradient(145deg, #fffdf7, #fdf5e6);
+      border: 3px double #b8860b;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      text-align: center;
+      transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.25s;
+      z-index: 2;
+    }
+
+    .scene.opened .card-peek {
+      transform: translateY(-130px);
+    }
+
+    .card-peek span {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2rem;
+      color: #b8860b;
+    }
+
+    .card-peek small {
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      color: #7a121c;
+      text-transform: uppercase;
+    }
+
+    /* Front pocket of the cover */
+    .envelope-front {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+      overflow: hidden;
+      border-radius: 6px;
+    }
+
+    .envelope-front::before {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 220px solid #7a121c;
+      border-right: 220px solid #680e17;
+      border-top: 155px solid transparent;
+      border-bottom: 145px solid #590b13;
+    }
+
+    .cover-label {
+      position: absolute;
+      bottom: 26px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      z-index: 4;
+      pointer-events: none;
+    }
+
+    .cover-label h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      letter-spacing: 2.5px;
+      color: #f3d78a;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .cover-label p {
+      font-size: 0.85rem;
+      font-style: italic;
+      color: #e6c98a;
+      opacity: 0.9;
+    }
+
+    /* Top Flap */
+    .envelope-flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 165px;
+      transform-origin: top center;
+      transition: transform 0.55s ease;
+      z-index: 5;
+      transform-style: preserve-3d;
+    }
+
+    .envelope-flap::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, #8b1622 0%, #680d16 100%);
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      border-top: 2px solid #d4af37;
+    }
+
+    .scene.opened .envelope-flap {
+      transform: rotateX(180deg);
+      z-index: 1;
+    }
+
+    /* Golden Wax Seal */
+    .wax-seal {
+      position: absolute;
+      top: 132px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #f9e29c, #d4af37 55%, #8c6405 100%);
+      border: 2px solid #fff3c4;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #5a0d14;
+      z-index: 6;
+      transition: transform 0.3s ease, opacity 0.35s ease;
+    }
+
+    .cover-wrapper:hover .wax-seal {
+      transform: translateX(-50%) scale(1.08);
+    }
+
+    .scene.opened .wax-seal {
+      opacity: 0;
+      transform: translateX(-50%) scale(0.6);
+    }
+
+    .wax-seal .om {
+      font-size: 1.45rem;
+      line-height: 1;
+      font-weight: bold;
+    }
+
+    .wax-seal .open-text {
+      font-family: 'Cinzel', serif;
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .tap-hint {
+      margin-top: 20px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      color: #f3d78a;
+      text-transform: uppercase;
+      animation: pulse 1.8s infinite;
+      transition: opacity 0.4s ease;
+    }
+
+    .scene.opened .tap-hint {
+      opacity: 0;
+      display: none;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.55; }
+      50% { opacity: 1; }
+    }
+
+    /* ---------------- FULL INVITATION CARD ---------------- */
+    .invitation-card {
+      background: linear-gradient(145deg, #fffdf7 0%, #fdf5e6 100%);
+      width: 100%;
+      max-width: 650px;
+      padding: 42px 34px;
       border: 8px double #b8860b;
       outline: 3px solid #7a121c;
       outline-offset: -16px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.55);
       text-align: center;
+      opacity: 0;
+      transform: translateY(70px) scale(0.92);
+      pointer-events: none;
+      position: absolute;
+      transition: opacity 0.7s ease 0.6s, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.6s;
+    }
+
+    .scene.opened .invitation-card {
       position: relative;
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+
+    .symbol {
+      font-size: 2.2rem;
+      color: #b8860b;
+      margin-bottom: 6px;
     }
 
     .blessing {
@@ -45,12 +286,6 @@
       font-weight: 700;
       margin-bottom: 12px;
       text-transform: uppercase;
-    }
-
-    .symbol {
-      font-size: 2.2rem;
-      color: #b8860b;
-      margin-bottom: 8px;
     }
 
     .subtitle {
@@ -73,14 +308,14 @@
       font-size: 1rem;
       line-height: 1.7;
       color: #4a2c2a;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     .event-title {
       font-family: 'Great Vibes', cursive;
-      font-size: 3.2rem;
+      font-size: 3.1rem;
       color: #b8860b;
-      margin: 8px 0 4px;
+      margin: 6px 0 4px;
       line-height: 1.2;
     }
 
@@ -90,14 +325,14 @@
       letter-spacing: 3px;
       color: #7a121c;
       text-transform: uppercase;
-      margin-bottom: 24px;
+      margin-bottom: 22px;
     }
 
     .divider {
       width: 160px;
       height: 2px;
       background: linear-gradient(to right, transparent, #b8860b, transparent);
-      margin: 20px auto;
+      margin: 18px auto;
     }
 
     .details-box {
@@ -119,17 +354,17 @@
       font-weight: 700;
       color: #7a121c;
       display: block;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       letter-spacing: 1px;
       text-transform: uppercase;
       margin-bottom: 2px;
     }
 
     .compliments-label {
-      font-size: 0.9rem;
+      font-size: 0.92rem;
       font-style: italic;
       color: #6b4c35;
-      margin-top: 22px;
+      margin-top: 20px;
     }
 
     .son-name {
@@ -141,9 +376,52 @@
     }
 
     .footer-note {
-      margin-top: 20px;
+      margin-top: 16px;
       font-size: 0.9rem;
       color: #5c3a21;
+    }
+
+    .close-btn {
+      margin-top: 24px;
+      background: #7a121c;
+      color: #fdf5e6;
+      border: 1px solid #d4af37;
+      padding: 10px 22px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.82rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: background 0.25s ease;
+    }
+
+    .close-btn:hover {
+      background: #5a0d14;
+    }
+
+    @media (max-width: 480px) {
+      .cover-wrapper {
+        height: 250px;
+      }
+      .envelope-front::before {
+        border-left-width: 190px;
+        border-right-width: 190px;
+        border-top-width: 130px;
+        border-bottom-width: 120px;
+      }
+      .envelope-flap {
+        height: 138px;
+      }
+      .wax-seal {
+        top: 105px;
+      }
+      .invitation-card {
+        padding: 32px 22px;
+      }
+      .event-title {
+        font-size: 2.5rem;
+      }
     }
 
     @media print {
@@ -151,7 +429,15 @@
         background: none;
         padding: 0;
       }
-      .card {
+      .cover-wrapper,
+      .tap-hint,
+      .close-btn {
+        display: none !important;
+      }
+      .invitation-card {
+        position: relative;
+        opacity: 1;
+        transform: none;
         box-shadow: none;
       }
     }
@@ -159,50 +445,91 @@
 </head>
 <body>
 
-  <div class="card">
-    <div class="symbol">&#2384;</div>
-    <div class="blessing">Sri Ganeshaya Namaha</div>
+  <div class="scene" id="scene">
+    <!-- Envelope Cover -->
+    <div class="cover-wrapper" id="cover" onclick="openInvitation()" role="button" aria-label="Open Invitation">
+      <div class="envelope-back"></div>
 
-    <p class="subtitle">With the blessings of Almighty and Elders</p>
-
-    <div class="hosts">
-      Smt. Vallapudasu Ramadevi Goud<br>
-      &amp;<br>
-      Sri Vallapudasu Srisailam Goud
-    </div>
-
-    <p class="invite-text">
-      Cordially invite you and your family to grace the auspicious occasion of our
-    </p>
-
-    <h1 class="event-title">House Warming Ceremony</h1>
-    <div class="event-subtitle">Gruhapravesam</div>
-
-    <div class="divider"></div>
-
-    <div class="details-box">
-      <div class="detail-row">
-        <span class="detail-label">Date</span>
-        [Day, DD Month YYYY]
+      <div class="card-peek">
+        <span>Gruhapravesam</span>
+        <small>Vallapudasu Family</small>
       </div>
-      <div class="detail-row">
-        <span class="detail-label">Sumuhurtham</span>
-        [HH:MM AM] onwards
+
+      <div class="envelope-front"></div>
+
+      <div class="cover-label">
+        <h2>Vallapudasu Family</h2>
+        <p>House Warming Invitation</p>
       </div>
-      <div class="detail-row">
-        <span class="detail-label">Lunch</span>
-        [12:30 PM] onwards
-      </div>
-      <div class="detail-row">
-        <span class="detail-label">Venue</span>
-        [House No., Street Name, Locality, City - PIN]
+
+      <div class="envelope-flap"></div>
+
+      <div class="wax-seal">
+        <span class="om">&#2384;</span>
+        <span class="open-text">Open</span>
       </div>
     </div>
 
-    <p class="compliments-label">With Best Compliments From</p>
-    <div class="son-name">Vallapudasu Yashwanth Goud</div>
-    <div class="footer-note">Near &amp; Dear &bull; Contact: [+91 XXXXX XXXXX]</div>
+    <div class="tap-hint">Tap the seal to open invitation</div>
+
+    <!-- Full Invitation Card -->
+    <div class="invitation-card">
+      <div class="symbol">&#2384;</div>
+      <div class="blessing">Sri Ganeshaya Namaha</div>
+
+      <p class="subtitle">With the blessings of Almighty and Elders</p>
+
+      <div class="hosts">
+        Smt. Vallapudasu Ramadevi Goud<br>
+        &amp;<br>
+        Sri Vallapudasu Srisailam Goud
+      </div>
+
+      <p class="invite-text">
+        Cordially invite you and your family to grace the auspicious occasion of our
+      </p>
+
+      <h1 class="event-title">House Warming Ceremony</h1>
+      <div class="event-subtitle">Gruhapravesam</div>
+
+      <div class="divider"></div>
+
+      <div class="details-box">
+        <div class="detail-row">
+          <span class="detail-label">Date</span>
+          [Day, DD Month YYYY]
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Sumuhurtham</span>
+          [HH:MM AM] onwards
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Lunch</span>
+          [12:30 PM] onwards
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Venue</span>
+          [House No., Street Name, Locality, City - PIN]
+        </div>
+      </div>
+
+      <p class="compliments-label">With Best Compliments From</p>
+      <div class="son-name">Vallapudasu Yashwanth Goud</div>
+      <div class="footer-note">Near &amp; Dear &bull; Contact: [+91 XXXXX XXXXX]</div>
+
+      <button class="close-btn" onclick="closeInvitation()">Close Cover</button>
+    </div>
   </div>
+
+  <script>
+    function openInvitation() {
+      document.getElementById('scene').classList.add('opened');
+    }
+
+    function closeInvitation() {
+      document.getElementById('scene').classList.remove('opened');
+    }
+  </script>
 
 </body>
 </html>
